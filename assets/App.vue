@@ -1,15 +1,20 @@
 <template>
     <div>
-        <h2>Welcome home</h2>
-        <router-link to="/">Accueil</router-link>
-        <router-link to="/login">Se connecter</router-link>
-        <router-link to="/register">S'inscrire</router-link>
+        <Header />
         <router-view></router-view>
     </div>
 
 </template>
 
 <script>
+import Header from './components/Header.vue'
+
+export default {
+    name:'App',
+    components: {
+        Header
+    }
+}
 
 
 
