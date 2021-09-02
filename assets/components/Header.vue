@@ -17,8 +17,8 @@
            Compte
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><router-link to="/login" class="nav-link">S'inscrire</router-link></li>
-            <li><router-link to="/register" class="nav-link">Se connecter</router-link></li>
+            <li><router-link to="/login" class="nav-link text-dark">S'inscrire</router-link></li>
+            <li><router-link to="/register" class="nav-link text-dark">Se connecter</router-link></li>
            
           </ul>
         </li>
