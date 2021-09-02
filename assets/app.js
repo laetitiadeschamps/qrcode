@@ -12,6 +12,8 @@ import './styles/app.css';
 import './bootstrap';
 
 import { createApp } from 'vue';
+import 'es6-promise/auto';
+import Vuex from 'vuex';
 import router from './router/index';
 import App from './App.vue';
 
@@ -21,7 +23,19 @@ const app = createApp(App)
 // Make sure to _use_ the router instance to make the
 // whole app router-aware.
 app.use(router)
+app.use(Vuex);
 
 app.mount('#app')
+
+const store = new Vuex.Store({
+    state: {
+      count: 0
+    },
+    mutations: {
+      increment (state) {
+        state.count++
+      }
+    }
+  })
 
 // Now the app has started!
