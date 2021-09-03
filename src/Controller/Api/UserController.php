@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +18,12 @@ use Symfony\Component\Serializer\SerializerInterface;
 */
 class UserController extends AbstractController
 {
-    
+    private $em;
+
+    public function __construct (EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
     /**
      * @Route("", name="add", methods={"POST"})
      */
@@ -27,7 +33,7 @@ class UserController extends AbstractController
         $user = new User();
         $serializer->deserialize($JsonData, User::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $user]); 
         $user->setRoles(['ROLE_USER']);
-        //TODO Validation 
+        //TODO: validation
         // $errors = $this->validator->validate($user, null, ['add']);
         // //If there are any errors, we send back a list of errors (reformatted for clearer output)
         // if (count($errors) > 0) {
