@@ -12,6 +12,7 @@ use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
 * @Route("/api/v1/user", name="user_")
@@ -19,10 +20,12 @@ use Symfony\Component\Serializer\SerializerInterface;
 class UserController extends AbstractController
 {
     private $em;
+    private $validator;
 
-    public function __construct (EntityManagerInterface $em)
+    public function __construct (EntityManagerInterface $em, ValidatorInterface $validator)
     {
         $this->em = $em;
+        $this->validator = $validator;
     }
     /**
      * @Route("", name="add", methods={"POST"})
@@ -34,16 +37,16 @@ class UserController extends AbstractController
         $serializer->deserialize($JsonData, User::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $user]); 
         $user->setRoles(['ROLE_USER']);
         //TODO: validation
-        // $errors = $this->validator->validate($user, null, ['add']);
-        // //If there are any errors, we send back a list of errors (reformatted for clearer output)
-        // if (count($errors) > 0) {
-        //     $errorslist = array();
-        //     foreach ($errors as $error) {
-        //         $field = $error->getPropertyPath();
-        //         $errorslist[$field] = $error->getMessage();
-        //     }
-        //     return $this->json($errorslist, 400);
-        // }
+        $errors = $this->validator->validate($user);
+        //If there are any errors, we send back a list of errors (reformatted for clearer output)
+        if (count($errors) > 0) {
+            $errorslist = array();
+            foreach ($errors as $error) {
+                $field = $error->getPropertyPath();
+                $errorslist[$field] = $error->getMessage();
+            }
+            return $this->json($errorslist, 400);
+        }
         $user->setPassword(
             $passwordEncoder->hashPassword(
                 $user,
