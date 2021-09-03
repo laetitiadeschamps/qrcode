@@ -2,7 +2,8 @@
     <h1>Accueil</h1>
    {{$store.state.username}}
     <input v-model="computedUsername" type="text">
-    <button @click="setUsername" >Submit</button>
+    <button @click="setUsername" >Valider</button>
+    <button @click="this.$store.dispatch('testAxios')">Get random number</button>
 </template>
 
 <script>

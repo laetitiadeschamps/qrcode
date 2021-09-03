@@ -57,6 +57,7 @@ class QrCode
 
     public function __construct()
     {
+    
         $this->shared_with = new ArrayCollection();
     }
 

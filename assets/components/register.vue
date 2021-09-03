@@ -1,23 +1,50 @@
 <template>
    <div class="text-center">
     <h1>S'inscrire</h1>
-    <form>
+    <form @submit.prevent="handleRegister">
     <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">Email address</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        <label for="email" class="form-label">Adresse email</label>
+        <input type="email" class="form-control" id="email" v-model="email" aria-describedby="emailHelp">
+        <div id="emailHelp" class="form-text">Cette adresse ne sera pas partagée sans votre accord.</div>
     </div>
     <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Password</label>
-        <input type="password" class="form-control" id="exampleInputPassword1">
+        <label for="password" class="form-label">Mot de passe</label>
+        <input type="password" v-model="password" class="form-control" id="password">
     </div>
-    <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+     <div class="mb-3">
+        <label for="password_confirm" class="form-label">Confirmez votre mot de passe</label>
+        <input type="password" v-model="password_confirm" class="form-control" id="password_confirm">
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    
+    <button type="submit" class="btn btn-primary">S'inscrire</button>
     </form>
 </div>
 </template>
 
-<script></script>
+<script>
+export default {
+    name:'Register',
+    data() {
+        return {
+            email:'',
+            password:'',
+            password_confirm:''
+        }
+    },
+    methods: {
+        handleRegister() {
+           const data = {
+               email:this.email,
+               password:this.password,
+               password_confirm:this.password_confirm
+           }
+        //    console.log(window.location.origin);
+        //    console.log(this.$route.path);
+           this.$store.dispatch('handleRegister', data);
+
+            //this.$store.commit('setUsername', this.computedUsername);
+        }
+    }
+}
+
+</script>
