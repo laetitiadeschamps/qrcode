@@ -36,7 +36,7 @@ class UserController extends AbstractController
         $user = new User();
         $serializer->deserialize($JsonData, User::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $user]); 
         $user->setRoles(['ROLE_USER']);
-        //TODO: validation
+
         $errors = $this->validator->validate($user);
         //If there are any errors, we send back a list of errors (reformatted for clearer output)
         if (count($errors) > 0) {

@@ -15,6 +15,7 @@ use App\Validator as CustomValidator;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity("email", message="Ce mail est déjà utilisé")
+ * @CustomValidator\RepeatPassword()
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -59,6 +60,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\ManyToMany(targetEntity=QrCode::class, mappedBy="shared_with")
      */
     private $qrCodesShared;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $password_confirm;
 
     public function __construct()
     {
@@ -208,6 +214,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->qrCodesShared->removeElement($qrCodesShared)) {
             $qrCodesShared->removeSharedWith($this);
         }
+
+        return $this;
+    }
+
+    public function getPasswordConfirm(): ?string
+    {
+        return $this->password_confirm;
+    }
+
+    public function setPasswordConfirm(?string $password_confirm): self
+    {
+        $this->password_confirm = $password_confirm;
 
         return $this;
     }
