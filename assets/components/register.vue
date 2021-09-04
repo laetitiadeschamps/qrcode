@@ -3,13 +3,21 @@
     <h1>S'inscrire</h1>
     <form @submit.prevent="handleRegister" novalidate="true">
         <div class="errors-container">
-            <p class="message">{{ this.message}}</p>
+            <p class="message">{{ $store.state.formMessage}}</p>
             <p v-if="errors.length">
-            <b>Merci de vérifier le(s) champs suivant(s):</b>
-            <ul>
-                <li v-for="error in errors" :key="error">{{ error }}</li>
-            </ul>
-        </p>
+                <b>Merci de vérifier le(s) champs suivant(s):</b>
+                <ul>
+                    <li v-for="error in errors" :key="error">{{ error }}</li>
+                </ul>
+            </p>
+             <p v-if="$store.state.errors.length">
+                <b>Merci de vérifier le(s) champs suivant(s):</b>
+                <ul>
+                    <li v-for="error in $store.state.errors" :key="error">{{ error }}</li>
+                </ul>
+            </p>
+           
+            
         </div>
         
     <div class="mb-3">
@@ -37,7 +45,6 @@ export default {
     data() {
         return {
             errors:[],
-            message:'',
             email:'',
             password:'',
             password_confirm:''
@@ -46,7 +53,7 @@ export default {
     methods: {
         handleRegister() {
             this.errors=[];
-            this.message='';
+            this.$store.commit('resetErrors');
             let isValid=true;
                 if(!this.validEmail()) {
                     this.errors.push("L'email n'est pas valide");
@@ -61,6 +68,7 @@ export default {
                     isValid = false;
                 }
                 if(isValid) {
+                    this.errors=[];
                     const data = {
                         email:this.email,
                         password:this.password,
@@ -68,16 +76,9 @@ export default {
                     }
                     console.log(data);
 
-                   
-                    try {
-                        this.$store.dispatch('handleRegister', data);
-                        this.message = "Votre compte a bien été créé";
-
-                    }
-                    catch(error) {
-                        this.message="Il y a eu une erreur";
-                    }
+                    this.$store.dispatch('handleRegister', data);
                     
+                      
                 }
                     
             
@@ -106,9 +107,9 @@ export default {
 
 </script>
 
-<style scoped>
+<style>
 
-ul {
+li {
     list-style-type: none;
 }
 

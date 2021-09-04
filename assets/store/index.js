@@ -4,34 +4,34 @@ import axios from 'axios'
 
 export default createStore({
     state: {
-        username:'test',
-        counter:0
+        errors:[],
+        formMessage:'',
+
     },
     mutations: {
-       setUsername(state, payload) {
-            state.username =  payload
+       addMessage(state, payload) {
+            state.formMessage =  payload
         },
-        addRandom(state, payload) {
-            state.counter+= payload
+        addFormErrors(state, payload) {
+            state.errors= JSON.parse(payload);  
+        },
+        resetErrors(state) {
+            state.errors=[];
+            state.formMessage='';
         }
     },
     actions: {
-        //with param
-        //testAxios({ commit }, param) {
-        testAxios({ commit }) {
-            axios('https://www.random.org/integers/?num=1&min=1&max=8&col=1&base=10&format=plain&rnd=new').then(response=> {
-                commit('addRandom', response.data);
-            })
-        },
+        
         handleRegister({commit}, data) {
           
             axios.post(window.location.origin + '/api/v1/user', data)
                 .then(response=> {
                     console.log(response);
-                    //commit('addRandom', response.data);
+                    commit('addMessage', "Le compte a bien été créé");
                 })
                 .catch(error=> {
-                    console.log(error);
+                    commit('addFormErrors', error.request.responseText);
+                    commit('addMessage', "Il y a eu une erreur");
                 })
         }
 
