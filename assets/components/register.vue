@@ -1,7 +1,17 @@
 <template>
    <div class="text-center">
     <h1>S'inscrire</h1>
-    <form @submit.prevent="handleRegister">
+    <form @submit.prevent="handleRegister" novalidate="true">
+        <div class="errors-container">
+            <p class="message">{{ this.message}}</p>
+            <p v-if="errors.length">
+            <b>Merci de vérifier le(s) champs suivant(s):</b>
+            <ul>
+                <li v-for="error in errors" :key="error">{{ error }}</li>
+            </ul>
+        </p>
+        </div>
+        
     <div class="mb-3">
         <label for="email" class="form-label">Adresse email</label>
         <input type="email" class="form-control" id="email" v-model="email" aria-describedby="emailHelp">
@@ -26,6 +36,8 @@ export default {
     name:'Register',
     data() {
         return {
+            errors:[],
+            message:'',
             email:'',
             password:'',
             password_confirm:''
@@ -33,18 +45,74 @@ export default {
     },
     methods: {
         handleRegister() {
-           const data = {
-               email:this.email,
-               password:this.password,
-               password_confirm:this.password_confirm
-           }
-        //    console.log(window.location.origin);
-        //    console.log(this.$route.path);
-           this.$store.dispatch('handleRegister', data);
+            this.errors=[];
+            this.message='';
+            let isValid=true;
+                if(!this.validEmail()) {
+                    this.errors.push("L'email n'est pas valide");
+                   isValid = false;
+                } 
+                if(!this.validPassword()) {
+                    this.errors.push("Le mot de passe n'est pas valide");
+                    isValid = false;
+                }
+                if(!this.matchingPassword()) {
+                    this.errors.push("Les mots de passe ne correspondent pas");
+                    isValid = false;
+                }
+                if(isValid) {
+                    const data = {
+                        email:this.email,
+                        password:this.password,
+                        password_confirm:this.password_confirm
+                    }
+                    console.log(data);
 
+                   
+                    try {
+                        this.$store.dispatch('handleRegister', data);
+                        this.message = "Votre compte a bien été créé";
+
+                    }
+                    catch(error) {
+                        this.message="Il y a eu une erreur";
+                    }
+                    
+                }
+                    
+            
+            
+            //    console.log(window.location.origin);
+            //    console.log(this.$route.path);
             //this.$store.commit('setUsername', this.computedUsername);
+        },
+        validEmail(){
+            const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return regex.test(this.email);
+        },
+        validPassword() {
+            const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$%_*|=&-])[A-Za-z\d@$%_*|=&-]{6,}$/;
+           
+            return regex.test(this.password);
+        },
+        matchingPassword() {
+            if(this.password != this.password_confirm) {
+                return false;
+            }
+            return true;
         }
     }
 }
 
 </script>
+
+<style scoped>
+
+ul {
+    list-style-type: none;
+}
+
+.errors-container {
+    min-height: 5em;
+}
+</style>
