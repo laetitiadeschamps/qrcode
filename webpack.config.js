@@ -56,6 +56,7 @@ Encore
     })
     .enableVueLoader()
 
+    
     // enables Sass/SCSS support
     //.enableSassLoader()
 

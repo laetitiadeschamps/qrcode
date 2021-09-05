@@ -17,9 +17,11 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "@smartweb/vue-flash-message": "^0.6.10",
         "axios": "^0.21.1",
         "es6-promise": "^4.2.8",
         "vue": "^3.2.7",
+        "vue-flash-message": "^0.7.2",
         "vue-loader": "^16.5.0",
         "vue-router": "^4.0.11",
         "vue-template-compiler": "^2.6.14",

@@ -3,7 +3,8 @@
     <h1>S'inscrire</h1>
     <form @submit.prevent="handleRegister" novalidate="true">
         <div class="errors-container">
-            <p class="message">{{ $store.state.formMessage}}</p>
+             <!-- <p v-if="$store.state.formMessage" class="message" :class="{'alert-danger': $store.state.formMessage.type == error, 'alert-success': $store.state.formMessage.type == success}">{{ $store.state.formMessage.message}}</p>  -->
+            <p class="message">{{ $store.state.formMessage.message}}</p>
             <p v-if="errors.length">
                 <b>Merci de vérifier le(s) champs suivant(s):</b>
                 <ul>
