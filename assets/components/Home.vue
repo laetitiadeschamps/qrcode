@@ -37,6 +37,5 @@ export default({
 main {
     margin-top:4em;
     min-height:80vh;
-    position: relative;
 }
 </style>

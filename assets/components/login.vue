@@ -2,22 +2,53 @@
 <main>
 <div class="text-center">
     <h1>Se connecter</h1>
-    <form>
+    <form @submit.prevent="handleLogin">
     <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">Email address</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        <label for="email" class="form-label">Email address</label>
+        <input type="email" v-model="email" class="form-control" id="email" aria-describedby="emailHelp">
+        <div id="emailHelp" class="form-text">Cette adresse ne sera pas partagée sans votre accord.</div>
     </div>
     <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Password</label>
-        <input type="password" class="form-control" id="exampleInputPassword1">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" v-model="password" id="password">
     </div>
-    <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-    </div>
+   
     <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
 </main>    
 </template>
+
+<script>
+ export default {
+    name:'Login',
+    props: {
+         email:'', 
+         password:'',
+
+    },
+    beforeUnmount() {
+         this.$store.commit('resetErrors');
+    },
+    methods: {
+        handleLogin() {
+                this.$store.commit('resetErrors');
+                if(!this.email || !this.password) {
+                this.$flashMessage.show({
+                                type: 'error',
+                                title: 'Tous les champs doivent être remplis',
+                                message: 'Tous les champs doivent être remplis'
+                            });
+                    return;
+                } 
+            
+                const data = {
+                    username:this.email,
+                    password:this.password
+                }
+                this.$store.dispatch('handleLogin', data);          
+
+        }
+    }
+ }
+</script>

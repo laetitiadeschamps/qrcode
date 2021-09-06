@@ -44,6 +44,17 @@ export default createStore({
                     });
                     
                 })
+        },
+        handleLogin({commit}, data) {
+          
+            axios.post(window.location.origin + '/api/login_check', data)
+                .then(response=> {
+                    router.push('/');    
+                })
+                .catch(error=> {
+                    commit('addFormErrors', error.request.responseText);
+                    
+                })
         }
 
     },
