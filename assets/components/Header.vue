@@ -17,11 +17,13 @@
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
            Compte
           </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><router-link to="/login" class="nav-link text-dark">Se connecter</router-link></li>
-            <li><router-link to="/register" class="nav-link text-dark">S'inscrire</router-link></li>
-           
+
+          <ul  class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><router-link to="/" @click="handleLogout"  v-if="$store.state.user.token" class="nav-link text-dark">Se déconnecter</router-link></li>
+             <li><router-link to="/login" v-if="!$store.state.user.token" class="nav-link text-dark">Se connecter</router-link></li>
+            <li><router-link to="/register" v-if="!$store.state.user.token" class="nav-link text-dark">S'inscrire</router-link></li>
           </ul>
+          
         </li>
       </ul>
     </div>
@@ -38,6 +40,11 @@ export default {
   name:'Header',
   components: {
     Flash
+  },
+  methods: {
+    handleLogout() {
+      this.$store.commit('handleLogout');
+    }
   }
 }
 

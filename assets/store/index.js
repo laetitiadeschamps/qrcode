@@ -6,7 +6,8 @@ import  { flashMessage } from '@smartweb/vue-flash-message';
 
 export default createStore({
     state: {
-        errors: []
+        errors: [],
+        user:{}
     },
     mutations: {
        
@@ -18,6 +19,18 @@ export default createStore({
         },
         resetErrors(state) {
             state.errors=[];
+        },
+        saveUserInfos(state, payload) {
+            state.user = payload
+        },
+        handleLogout(state) {
+            state.user = {};
+            localStorage.setItem('token', null);
+            flashMessage.show({
+                type: 'success',
+                title: 'Vous avez été déconnecté!',
+                message: 'Vous avez été déconnecté!'
+            });
         }
     },
    
@@ -46,10 +59,12 @@ export default createStore({
                 })
         },
         handleLogin({commit}, data) {
-          
-            axios.post(window.location.origin + 'api/login_check', data)
+        
+            axios.post('api/login_check', data)
                 .then(response=> {
-                    router.push('/');    
+                    router.push('/');  
+                   commit('saveUserInfos', response.data);
+                   localStorage.setItem('token', response.data.token)
                 })
                 .catch(error=> {
                     commit('addFormErrors', error.request.responseText);
