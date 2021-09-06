@@ -32,13 +32,10 @@ export default({
 </script>
 
 <style>
-body {
-     min-height: 100%;
-     display: flex;
-     flex-direction: column;
-}
+
 
 main {
-    flex-grow: 1;
+    margin-top:4em;
+    min-height:80vh;
 }
 </style>
