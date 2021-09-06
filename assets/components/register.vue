@@ -2,7 +2,8 @@
 <main>
    <div class="text-center">
     <h1>S'inscrire</h1>
-    <form @submit.prevent="handleRegister" novalidate="true">
+    <form @submit.prevent="handleRegister" novalidate="true" class="w-50 mx-auto">
+       
         <div class="errors-container">
              <!-- <p v-if="$store.state.formMessage" class="message" :class="{'alert-danger': $store.state.formMessage.type == error, 'alert-success': $store.state.formMessage.type == success}">{{ $store.state.formMessage.message}}</p>  -->
             
@@ -14,7 +15,7 @@
             </p> -->
              <p v-if="Object.entries($store.state.errors)">
                 <ul>
-                    <li v-for="error in $store.state.errors" :key="error">{{ error.error }} </li>
+                    <li class="alert alert-danger" v-for="error in $store.state.errors" :key="error">{{ error.error }} </li>
                 </ul>
             </p>
            
