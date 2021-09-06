@@ -1,4 +1,5 @@
 <template>
+<main>
 <div class="text-center">
     <h1>Se connecter</h1>
     <form>
@@ -18,5 +19,5 @@
     <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
-    
+</main>    
 </template>

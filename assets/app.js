@@ -16,7 +16,7 @@ import Vuex from 'vuex';
 import store from './store';
 import router from './router/index';
 import App from './App.vue';
-import flashMessages from '@smartweb/vue-flash-message';
+import FlashMessage from '@smartweb/vue-flash-message';
 
 // 5. Create and mount the root instance.
 const app = createApp(App)
@@ -24,6 +24,7 @@ const app = createApp(App)
 // whole app router-aware.
 
 app.use(router);
+app.use(FlashMessage);
 app.use(store);
 app.mount('#app')
 

@@ -1,4 +1,5 @@
 <template>
+
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
@@ -27,5 +28,16 @@
   </div>
 </nav>
     </header>
-    
+    <Flash />
 </template>
+
+<script>
+import Flash from './Flash.vue';
+
+export default {
+  name:'Header',
+  components: {
+    Flash
+  }
+}
+</script>

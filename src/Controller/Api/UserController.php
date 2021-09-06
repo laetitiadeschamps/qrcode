@@ -56,6 +56,12 @@ class UserController extends AbstractController
                 $user->getPassword()
             )
         );
+        $user->setPasswordConfirm(
+            $passwordEncoder->hashPassword(
+                $user,
+                $user->getPasswordConfirm()
+            )
+        );
         $this->em->persist($user);
         $this->em->flush();
         return $this->json($user);

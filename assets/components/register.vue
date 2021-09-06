@@ -1,4 +1,5 @@
 <template>
+<main>
    <div class="text-center">
     <h1>S'inscrire</h1>
     <form @submit.prevent="handleRegister" novalidate="true">
@@ -37,6 +38,7 @@
     <button type="submit" class="btn btn-primary">S'inscrire</button>
     </form>
 </div>
+</main>
 </template>
 
 <script>
@@ -54,8 +56,7 @@ export default {
     },
     
     methods: {
-        handleRegister() {
-           
+        handleRegister() { 
             this.$store.commit('resetErrors');
             let isValid=true;
                 if(!this.validEmail()) {
@@ -81,6 +82,12 @@ export default {
 
                     this.$store.dispatch('handleRegister', data);    
                       
+                } else {
+                    this.$flashMessage.show({
+                        type: 'error',
+                        title: 'Il y a eu une erreur',
+                        message: 'Il y a eu une erreur'
+                    });
                 }
                     
             

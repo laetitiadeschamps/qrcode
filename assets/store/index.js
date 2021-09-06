@@ -1,6 +1,8 @@
 import { createStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import axios from 'axios'
+import router from '../router';
+
 export default createStore({
     state: {
         errors: []
@@ -10,13 +12,9 @@ export default createStore({
        
         addFormErrors(state, payload) {
           state.errors= JSON.parse(payload); 
-          console.log(state.errors);
-          console.log(typeof state.errors);
         },
         addFormError(state, payload) {
-            console.log(typeof state.errors);
-            state.errors.push(payload) ; 
-            console.log(state.errors);     
+            state.errors.push(payload) ;    
         },
         resetErrors(state) {
             state.errors=[];
@@ -28,13 +26,21 @@ export default createStore({
           
             axios.post(window.location.origin + '/api/v1/user', data)
                 .then(response=> {
-                    console.log(response);
-                   
-                    this.$router.push('/login');
+                  
+                    router.push('/login');
+                    this.$flashMessage.show({
+                        type: 'success',
+                        title: 'Le compte a été créé!',
+                        message: 'Le compte a été créé!'
+                    });
                 })
                 .catch(error=> {
                     commit('addFormErrors', error.request.responseText);
-                    
+                    this.$flashMessage.show({
+                        type: 'error',
+                        title: 'Il y a eu une erreur!',
+                        message: 'Il y a eu une erreur!'
+                    });
                     
                 })
         }
