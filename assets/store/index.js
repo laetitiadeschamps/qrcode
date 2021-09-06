@@ -25,7 +25,7 @@ export default createStore({
         
         handleRegister({commit}, data) {
           
-            axios.post(window.location.origin + '/api/v1/user', data)
+            axios.post('api/v1/user', data)
                 .then(response=> {
                   
                     router.push('/login');
@@ -47,7 +47,7 @@ export default createStore({
         },
         handleLogin({commit}, data) {
           
-            axios.post(window.location.origin + '/api/login_check', data)
+            axios.post(window.location.origin + 'api/login_check', data)
                 .then(response=> {
                     router.push('/');    
                 })

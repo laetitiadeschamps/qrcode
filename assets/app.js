@@ -17,6 +17,7 @@ import store from './store';
 import router from './router/index';
 import App from './App.vue';
 import FlashMessage from '@smartweb/vue-flash-message';
+import './axios';
 
 // 5. Create and mount the root instance.
 const app = createApp(App)
