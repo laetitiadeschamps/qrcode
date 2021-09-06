@@ -2,11 +2,11 @@ import { createStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import axios from 'axios'
 import router from '../router';
+import  { flashMessage } from '@smartweb/vue-flash-message';
 
 export default createStore({
     state: {
         errors: []
-
     },
     mutations: {
        
@@ -20,6 +20,7 @@ export default createStore({
             state.errors=[];
         }
     },
+   
     actions: {
         
         handleRegister({commit}, data) {
@@ -28,7 +29,7 @@ export default createStore({
                 .then(response=> {
                   
                     router.push('/login');
-                    this.$flashMessage.show({
+                    flashMessage.show({
                         type: 'success',
                         title: 'Le compte a été créé!',
                         message: 'Le compte a été créé!'
@@ -36,7 +37,7 @@ export default createStore({
                 })
                 .catch(error=> {
                     commit('addFormErrors', error.request.responseText);
-                    this.$flashMessage.show({
+                    flashMessage.show({
                         type: 'error',
                         title: 'Il y a eu une erreur!',
                         message: 'Il y a eu une erreur!'
