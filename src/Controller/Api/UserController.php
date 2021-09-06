@@ -41,9 +41,12 @@ class UserController extends AbstractController
         //If there are any errors, we send back a list of errors (reformatted for clearer output)
         if (count($errors) > 0) {
             $errorslist = array();
+            $i=0;
             foreach ($errors as $error) {
                 $field = $error->getPropertyPath();
-                $errorslist[$field] = $error->getMessage();
+                $errorslist[$i]['field'] = $field;
+               $errorslist[$i]['error']= $error->getMessage();
+               $i++;
             }
             return $this->json($errorslist, 400);
         }

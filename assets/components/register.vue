@@ -4,17 +4,16 @@
     <form @submit.prevent="handleRegister" novalidate="true">
         <div class="errors-container">
              <!-- <p v-if="$store.state.formMessage" class="message" :class="{'alert-danger': $store.state.formMessage.type == error, 'alert-success': $store.state.formMessage.type == success}">{{ $store.state.formMessage.message}}</p>  -->
-            <p class="message">{{ $store.state.formMessage.message}}</p>
-            <p v-if="errors.length">
+            
+            <!-- <p v-if="errors.length">
                 <b>Merci de vérifier le(s) champs suivant(s):</b>
                 <ul>
-                    <li v-for="error in errors" :key="error">{{ error }}</li>
+                    <li v-for="error in errors" :key="error">{{ error }} </li>
                 </ul>
-            </p>
-             <p v-if="$store.state.errors.length">
-                <b>Merci de vérifier le(s) champs suivant(s):</b>
+            </p> -->
+             <p v-if="Object.entries($store.state.errors)">
                 <ul>
-                    <li v-for="error in $store.state.errors" :key="error">{{ error }}</li>
+                    <li v-for="error in $store.state.errors" :key="error">{{ error.error }} </li>
                 </ul>
             </p>
            
@@ -45,27 +44,30 @@ export default {
     name:'Register',
     data() {
         return {
-            errors:[],
             email:'',
             password:'',
             password_confirm:''
         }
     },
+    beforeUnmount() {
+         this.$store.commit('resetErrors');
+    },
+    
     methods: {
         handleRegister() {
-            this.errors=[];
+           
             this.$store.commit('resetErrors');
             let isValid=true;
                 if(!this.validEmail()) {
-                    this.errors.push("L'email n'est pas valide");
+                   this.$store.commit("addFormError",{field:"email", error:"L'email n'est pas valide"});
                    isValid = false;
                 } 
                 if(!this.validPassword()) {
-                    this.errors.push("Le mot de passe n'est pas valide");
+                    this.$store.commit("addFormError",{field:"password", error:"Le mot de passe n'est pas valide"});
                     isValid = false;
                 }
                 if(!this.matchingPassword()) {
-                    this.errors.push("Les mots de passe ne correspondent pas");
+                    this.$store.commit("addFormError", {field:"password",error:"Les mots de passe ne correspondent pas"});
                     isValid = false;
                 }
                 if(isValid) {
@@ -77,8 +79,7 @@ export default {
                     }
                     console.log(data);
 
-                    this.$store.dispatch('handleRegister', data);
-                    
+                    this.$store.dispatch('handleRegister', data);    
                       
                 }
                     
@@ -109,10 +110,6 @@ export default {
 </script>
 
 <style>
-
-li {
-    list-style-type: none;
-}
 
 .errors-container {
     min-height: 5em;
