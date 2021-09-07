@@ -3,6 +3,17 @@
 <div class="text-center">
     <h1>Se connecter</h1>
     <form @submit.prevent="handleLogin">
+        <div v-if="$store.state.loading">
+           <Spinner />
+       </div>
+       <div class="errors-container">
+        
+             <p v-if="Object.entries($store.state.errors)">
+                <ul>
+                    <li class="alert alert-danger" v-for="error in $store.state.errors" :key="error">{{ error.error }} </li>
+                </ul>
+            </p>
+        </div>
     <div class="mb-3">
         <label for="email" class="form-label">Email address</label>
         <input type="email" v-model="email" class="form-control" id="email" aria-describedby="emailHelp">
@@ -20,17 +31,20 @@
 </template>
 
 <script>
+import Spinner from './Spinner.vue'
  export default {
     name:'Login',
+    components: {
+        Spinner
+    },
     props: {
          email:'', 
          password:'',
-
     },
     beforeUnmount() {
          this.$store.commit('resetErrors');
-    
     },
+    
     methods: {
         
         handleLogin() {
@@ -48,6 +62,7 @@
                     username:this.email,
                     password:this.password
                 }
+                this.$store.commit('changeLoadingStatus', true);
                 this.$store.dispatch('handleLogin', data);          
 
         }

@@ -3,6 +3,9 @@
    <div class="text-center">
     <h1>S'inscrire</h1>
     <form @submit.prevent="handleRegister" novalidate="true" class="w-50 mx-auto">
+       <div v-if="$store.state.loading">
+           <Spinner />
+       </div>
        
         <div class="errors-container">
              <!-- <p v-if="$store.state.formMessage" class="message" :class="{'alert-danger': $store.state.formMessage.type == error, 'alert-success': $store.state.formMessage.type == success}">{{ $store.state.formMessage.message}}</p>  -->
@@ -43,6 +46,8 @@
 </template>
 
 <script>
+import Spinner from './Spinner.vue'
+
 export default {
     name:'Register',
     data() {
@@ -51,6 +56,9 @@ export default {
             password:'',
             password_confirm:''
         }
+    },
+    components: {
+        Spinner
     },
     beforeUnmount() {
          this.$store.commit('resetErrors');
@@ -79,7 +87,7 @@ export default {
                         password:this.password,
                         password_confirm:this.password_confirm
                     }
-                    console.log(data);
+                   this.$store.commit('changeLoadingStatus', true);
 
                     this.$store.dispatch('handleRegister', data);    
                       

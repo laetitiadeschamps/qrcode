@@ -8,12 +8,13 @@ export default createStore({
     state: {
         errors: [],
         user:{},
-        qrcodesDisplayed:[]
+        qrcodesDisplayed:[],
+        loading:false
     },
     mutations: {
        
         addFormErrors(state, payload) {
-          state.errors= JSON.parse(payload); 
+          state.errors= JSON.parse(payload);
         },
         addFormError(state, payload) {
             state.errors.push(payload) ;    
@@ -26,6 +27,9 @@ export default createStore({
         },
         saveUserInfos(state, payload) {
             state.user = payload
+        },
+        changeLoadingStatus(state, payload) {
+            state.loading = payload;
         },
         handleLogout(state) {
             state.user = {};
@@ -52,7 +56,7 @@ export default createStore({
           
             axios.post('api/v1/user', data)
                 .then(response=> {
-                  
+                  commit('changeLoadingStatus', false);
                     router.push('/login');
                     flashMessage.show({
                         type: 'success',
@@ -61,6 +65,7 @@ export default createStore({
                     });
                 })
                 .catch(error=> {
+                    commit('changeLoadingStatus', false);
                     commit('addFormErrors', error.request.responseText);
                     flashMessage.show({
                         type: 'error',
@@ -76,12 +81,13 @@ export default createStore({
                 .then(response=> {
                    
                    commit('saveUserInfos', response.data);
-                   //axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
                    localStorage.setItem('token', response.data.token);
+                   commit('changeLoadingStatus', false);
                     router.push('/');  
                 })
                 .catch(error=> {
-                    commit('addFormErrors', error.request.responseText);
+                    commit('changeLoadingStatus', false);
+                   commit("addFormError", {field:"email", error:"Les identifiants sont invalides"});
                     
                 })
         }
