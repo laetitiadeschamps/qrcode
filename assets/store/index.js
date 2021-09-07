@@ -7,7 +7,8 @@ import  { flashMessage } from '@smartweb/vue-flash-message';
 export default createStore({
     state: {
         errors: [],
-        user:{}
+        user:{},
+        qrcodesDisplayed:[]
     },
     mutations: {
        
@@ -20,7 +21,9 @@ export default createStore({
         resetErrors(state) {
             state.errors=[];
         },
-       
+        qrcodesDisplayed(state, data) {
+            state.qrcodesDisplayed = JSON.parse(data);
+        },
         saveUserInfos(state, payload) {
             state.user = payload
         },
@@ -42,7 +45,7 @@ export default createStore({
             
             .then(response=> {
                 console.log(response);
-                //commit('qrcodesDisplayed', response)
+                commit('qrcodesDisplayed', response.data)
             })
         },
         handleRegister({commit}, data) {
