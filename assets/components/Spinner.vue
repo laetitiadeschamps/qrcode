@@ -5,7 +5,11 @@
 </template>
 
 <style scoped>
-
+#loading-indicator {
+    position: absolute;
+    top:50%;
+    left:50%;
+}
 
 .MuiCircularProgress-root{
     display:inline-block
@@ -68,7 +72,8 @@
     0%{color:#4285f4}
     25%{color:#ea4335}
     50%{color:#f9bb2d}
-    75%{color:#34a853}}
+    75%{color:#34a853}
+}
 
 
 

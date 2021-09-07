@@ -3,9 +3,6 @@
    <div class="text-center">
     <h1>S'inscrire</h1>
     <form @submit.prevent="handleRegister" novalidate="true" class="w-50 mx-auto">
-       <div v-if="$store.state.loading">
-           <Spinner />
-       </div>
        
         <div class="errors-container">
              <!-- <p v-if="$store.state.formMessage" class="message" :class="{'alert-danger': $store.state.formMessage.type == error, 'alert-success': $store.state.formMessage.type == success}">{{ $store.state.formMessage.message}}</p>  -->

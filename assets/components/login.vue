@@ -3,9 +3,7 @@
 <div class="text-center">
     <h1>Se connecter</h1>
     <form @submit.prevent="handleLogin">
-        <div v-if="$store.state.loading">
-           <Spinner />
-       </div>
+        
        <div class="errors-container">
         
              <p v-if="Object.entries($store.state.errors)">
