@@ -21,7 +21,8 @@ class QrCodeController extends AbstractController
         $qrcodesShared = $qrCodeRepository->findShared($user);
         $qrcodes['owned'] = $qrcodesOwned;
         $qrcodes['shared'] = $qrcodesShared;
-        dd($qrcodes);
+       
+     
         return $this->json($qrcodes, 200, [], [
             'groups'=>'read:qrcodes'
         ]);

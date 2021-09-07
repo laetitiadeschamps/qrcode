@@ -37,7 +37,14 @@ export default createStore({
     },
    
     actions: {
-        
+        getQrcodes({commit}) {
+            axios.get('api/v1/qrcodes')
+            
+            .then(response=> {
+                console.log(response);
+                //commit('qrcodesDisplayed', response)
+            })
+        },
         handleRegister({commit}, data) {
           
             axios.post('api/v1/user', data)
