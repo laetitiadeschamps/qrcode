@@ -29,8 +29,10 @@
     },
     beforeUnmount() {
          this.$store.commit('resetErrors');
+    
     },
     methods: {
+        
         handleLogin() {
                 this.$store.commit('resetErrors');
                 if(!this.email || !this.password) {

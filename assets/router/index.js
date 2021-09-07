@@ -4,13 +4,19 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../components/Home.vue'
 import Login from '../components/Login.vue'
 import Register from '../components/Register.vue'
+import { isLoggedIn } from '../utils/index.js'
+
 // 2. Define some routes
 // Each route should map to a component.
 // We'll talk about nested routes later.
 const routes = [
   { path: '/', component: Home },
-  { path: '/login', component: Login },
-  { path:'/register', component: Register}
+  { path: '/login', component: Login, name:'login', meta: {
+    allowAnonymous: true
+  } },
+  { path:'/register', component: Register, meta: {
+    allowAnonymous: true
+  }}
 ]
 
 // 3. Create the router instance and pass the `routes` option
@@ -22,4 +28,19 @@ const router = createRouter({
   routes, // short for `routes: routes`
 })
 
+router.beforeEach((to, from, next) => {
+  
+  if (to.name == 'login' && isLoggedIn()) {
+    next({ path: '/' })
+  }
+  else if (!to.meta.allowAnonymous && !isLoggedIn()) {
+    next({
+      path: '/login',
+      query: { redirect: to.fullPath }
+    })
+  }
+  else {
+    next()
+  }  
+})
 export default router;

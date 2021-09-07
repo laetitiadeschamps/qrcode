@@ -1,7 +1,7 @@
 import { createStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import axios from 'axios'
-import router from '../router';
+import router from '../router/index';
 import  { flashMessage } from '@smartweb/vue-flash-message';
 
 export default createStore({
@@ -20,6 +20,7 @@ export default createStore({
         resetErrors(state) {
             state.errors=[];
         },
+       
         saveUserInfos(state, payload) {
             state.user = payload
         },
@@ -31,6 +32,7 @@ export default createStore({
                 title: 'Vous avez été déconnecté!',
                 message: 'Vous avez été déconnecté!'
             });
+            router.push('/login'); 
         }
     },
    
@@ -62,9 +64,11 @@ export default createStore({
         
             axios.post('api/login_check', data)
                 .then(response=> {
-                    router.push('/');  
+                   
                    commit('saveUserInfos', response.data);
-                   localStorage.setItem('token', response.data.token)
+                   //axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                   localStorage.setItem('token', response.data.token);
+                    router.push('/');  
                 })
                 .catch(error=> {
                     commit('addFormErrors', error.request.responseText);
