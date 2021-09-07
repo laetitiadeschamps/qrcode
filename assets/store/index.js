@@ -49,7 +49,16 @@ export default createStore({
             
             .then(response=> {
                 console.log(response);
+                commit('changeLoadingStatus', false);
                 commit('qrcodesDisplayed', response.data)
+            })
+            .catch(error=> {
+                commit('changeLoadingStatus', false);
+                flashMessage.show({
+                    type: 'error',
+                    title: 'Il y a eu une erreur, veuillez réessayer!',
+                    message: 'Il y a eu une erreur, veuillez réessayer!'
+                });
             })
         },
         handleRegister({commit}, data) {

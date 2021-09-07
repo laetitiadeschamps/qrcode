@@ -12,7 +12,8 @@
 export default({
     name:'Home',
     created() {
-    this.$store.dispatch('getQrcodes');
+        this.$store.commit('changeLoadingStatus', true);
+        this.$store.dispatch('getQrcodes');
     },
     
 })

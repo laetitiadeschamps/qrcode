@@ -29,12 +29,9 @@
 </template>
 
 <script>
-import Spinner from './Spinner.vue'
  export default {
     name:'Login',
-    components: {
-        Spinner
-    },
+
     props: {
          email:'', 
          password:'',

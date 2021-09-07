@@ -43,7 +43,6 @@
 </template>
 
 <script>
-import Spinner from './Spinner.vue'
 
 export default {
     name:'Register',
@@ -54,9 +53,7 @@ export default {
             password_confirm:''
         }
     },
-    components: {
-        Spinner
-    },
+   
     beforeUnmount() {
          this.$store.commit('resetErrors');
     },
