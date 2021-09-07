@@ -6,7 +6,7 @@ use App\Repository\QrCodeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=QrCodeRepository::class)
  */
@@ -16,42 +16,50 @@ class QrCode
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"read:qrcodes"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:qrcodes"})
      */
     private $url;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"read:qrcodes"})
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"read:qrcodes"})
      */
     private $updated_at;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"read:qrcodes"})
      */
     private $expires_at;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:qrcodes"})
      */
     private $name;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="qrCodes")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"read:qrcodes"})
      */
     private $author;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="qrCodesShared")
+     * @Groups({"read:qrcodes"})
      */
     private $shared_with;
 

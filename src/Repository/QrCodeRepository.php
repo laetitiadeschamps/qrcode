@@ -19,22 +19,22 @@ class QrCodeRepository extends ServiceEntityRepository
         parent::__construct($registry, QrCode::class);
     }
 
-    // /**
-    //  * @return QrCode[] Returns an array of QrCode objects
-    //  */
-    /*
-    public function findByExampleField($value)
+     /**
+      * Method to get all qrcodes shared with one user
+      * @param User
+      * @return QrCode[] Returns an array of QrCode objects
+      */
+    
+    public function findShared($user)
     {
-        return $this->createQueryBuilder('q')
-            ->andWhere('q.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('q.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('qrcode')
+            ->where(':userId MEMBER OF qrcode.shared_with')
+            ->setParameter(':userId', $user->getId())
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+    
 
     /*
     public function findOneBySomeField($value): ?QrCode
