@@ -93,7 +93,7 @@ export default createStore({
                    commit('saveUserInfos', response.data);
                    localStorage.setItem('token', response.data.token);
                    commit('changeLoadingStatus', false);
-                   console.log('test')
+                 
                     router.push('/');  
                 })
                 .catch(error=> {

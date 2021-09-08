@@ -8,7 +8,7 @@
        
         <li class="list-group-item d-flex align-items-center">
             <figure>
-                    <img src="https://qrtag.net/api/qr.png" class="list-image" alt="qrtag">
+                   <img src="https://api.qrserver.com/v1/create-qr-code/?data=HelloWorld&amp;size=100x100" alt="" class="list-image" title="" />
                     <!-- <img :src="qrcode.url" alt="qrtag"> -->
             </figure>
             <figcaption class="d-flex justify-content-center align-items-center">
@@ -36,7 +36,8 @@
        
     </ul>
     <div class="new-code">
-        <a href="" class="btn btn-outline-success ml-4">Créer un qrcode</a>
+         <router-link to="/new" class="btn btn-outline-success ml-4">Créer un qrcode</router-link>
+       
     </div>
     
 </section>

@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../components/Home.vue'
 import Login from '../components/Login.vue'
 import Register from '../components/Register.vue'
+import CodeCreation from '../components/CodeCreation'
 import { isLoggedIn } from '../utils/index.js'
 
 // 2. Define some routes
@@ -11,6 +12,7 @@ import { isLoggedIn } from '../utils/index.js'
 // We'll talk about nested routes later.
 const routes = [
   { path: '/', component: Home },
+  { path: '/new', component: CodeCreation },
   { path: '/login', component: Login, name:'login', meta: {
     allowAnonymous: true
   } },
