@@ -23,7 +23,7 @@ export default createStore({
             state.errors=[];
         },
         qrcodesDisplayed(state, data) {
-            state.qrcodesDisplayed = JSON.parse(data);
+            state.qrcodesDisplayed = data; 
         },
         saveUserInfos(state, payload) {
             state.user = payload
@@ -54,6 +54,7 @@ export default createStore({
             })
             .catch(error=> {
                 commit('changeLoadingStatus', false);
+               
                 flashMessage.show({
                     type: 'error',
                     title: 'Il y a eu une erreur, veuillez réessayer!',
@@ -92,6 +93,7 @@ export default createStore({
                    commit('saveUserInfos', response.data);
                    localStorage.setItem('token', response.data.token);
                    commit('changeLoadingStatus', false);
+                   console.log('test')
                     router.push('/');  
                 })
                 .catch(error=> {

@@ -1,6 +1,6 @@
 <template>
 
-    <header>
+    <header class="main-header">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">Qr-code Scanner</a>
@@ -51,7 +51,7 @@ export default {
 </script>
 
 <style>
- header {
+.main-header {
       position: fixed;
       top:0;
       left:0;
