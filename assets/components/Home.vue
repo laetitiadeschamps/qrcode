@@ -73,7 +73,7 @@ export default({
 
 
 main {
-    margin-top:4em;
+    margin:4em 0;
     min-height:80vh;
 }
 

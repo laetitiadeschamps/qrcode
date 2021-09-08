@@ -32,10 +32,25 @@
   <span class="input-group-text" id="qrcodeExpiration">Programmer une date de suppression du code</span>
   <input type="date" v-model="expiration" class="form-control" aria-label="expiration date input" aria-describedby="qrcodeExpiration">
 </div>
-<div class="input-group">
-  <div class="input-group-text">
-    <input class="form-check-input mt-0" v-model="download" type="radio" value="" aria-label="Radio button for automatic download">
-  </div>
+<div>
+ <p>Partager mon code : </p>
+  <div class="form-group row">
+          <div class="col-lg-12">
+            <button type="button" @click="addRow" class="btn btn-outline-secondary">Ajouter un contact</button>
+          </div>
+</div>
+ <div class="form-group row" v-for="(user, index) in users" :key="user.id">
+          <div class="col-lg-9">
+            <input type="text" :name="'user[' + index + '][mail]'" class="form-control" placeholder="email du contact">
+          </div>
+           <div class="col-lg-3">
+            <button type="button" @click="deleteRow(index)" class="btn btn-outline-danger rounded-circle">
+              <i class="fa fa-times"></i>
+            </button>
+          </div>
+ </div>
+
+  
   
 </div>
   <div class="mt-4">
@@ -62,8 +77,17 @@ export default {
         expiration:null, 
         text:'',
         format:'',
-        qrcodeUrl:''
+        qrcodeUrl:'',
+        users:[]
 
+    },
+    data() {
+        return {
+            users:[]
+        }
+    },
+    created() {
+        this.addRow();
     },
     computed: {
         qrcodePath: function() {
@@ -72,6 +96,15 @@ export default {
           console.log(bgcolor);
           return `https://api.qrserver.com/v1/create-qr-code/?data=${this.text}&size=${this.size}x${this.size}&format=${this.format}&bgcolor=${bgcolor}&color=${color}`
           //return `https://api.qrserver.com/v1/create-qr-code/?data=Hello&size=200x200&bgcolor=0000ff`
+        }
+    },
+    methods: {
+        addRow() {
+            console.log(this.users);
+            this.users.push({mail:''});
+        },
+        deleteRow(index) {
+             this.users.splice(index, 1);
         }
     }
 }
