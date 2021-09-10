@@ -95,10 +95,12 @@ export default {
     },
     computed: {
         qrcodePath: function() {
+        let size = this.size ?? '100';
+        let format = this.format ?? '';
         let bgcolor=this.background ? this.background.substring(1):""; 
         let color=this.foreground ? this.foreground.substring(1):""; 
           console.log(bgcolor);
-          return `https://api.qrserver.com/v1/create-qr-code/?data=${this.text}&size=${this.size}x${this.size}&format=${this.format}&bgcolor=${bgcolor}&color=${color}`
+          return `https://api.qrserver.com/v1/create-qr-code/?data=${this.text}&size=${size}x${size}&format=${format}&bgcolor=${bgcolor}&color=${color}`
           //return `https://api.qrserver.com/v1/create-qr-code/?data=Hello&size=200x200&bgcolor=0000ff`
         }
     },
