@@ -1,7 +1,11 @@
 <template>
 <main>
-    <form class="w-50 mx-auto text-center">
+    <form class="w-50 mx-auto text-center" @submit.prevent="createCode">
         <h1>Créer un qr-code</h1>
+        <div class="input-group input-group-md mb-3">
+  <span class="input-group-text" id="qrcodeName">Nom à donner au Qrcode (usage interne)<span>*</span></span> 
+  <input type="text" v-model="name" class="form-control" aria-label="name input" aria-describedby="qrcodeName">
+</div>
   <div class="input-group mb-3">
   <label class="input-group-text" for="inputGroupSelect01">Format</label>
   <select v-model="format" class="form-select" id="inputGroupSelect01">
@@ -15,9 +19,9 @@
   </select>
 </div>
   <div class="input-group input-group-md mb-3">
-  <span class="input-group-text" id="qrcodeText">Texte à encoder</span>
+  <span class="input-group-text" id="qrcodeText">Texte à encoder<span>*</span> </span>
   <input type="text" v-model="text" class="form-control" aria-label="Text input" aria-describedby="qrcodeText">
-</div>
+</div> 
   <div class="mb-3 d-flex align-items-stretch">
     <span class="input-group-text w-75" id="qrcodeBackground">Couleur de fond</span><input type="color" v-model="background" class="align-items-stretch w-25" id="qrcodeBackgroundColor" aria-describedby="qrcodeBackground">
   </div>
@@ -41,7 +45,7 @@
 </div>
  <div class="form-group row" v-for="(user, index) in users" :key="user.id">
           <div class="col-lg-9">
-            <input type="text" :name="'user[' + index + '][mail]'" class="form-control" placeholder="email du contact">
+            <input type="text" v-model="user.mail" :name="'user[' + index + '][mail]'" class="form-control" placeholder="email du contact">
           </div>
            <div class="col-lg-3">
             <button type="button" @click="deleteRow(index)" class="btn btn-outline-danger rounded-circle">
@@ -74,10 +78,10 @@ export default {
         background:'',
         foreground:'',
         size:0,
+        name:'',
         expiration:null, 
         text:'',
         format:'',
-        qrcodeUrl:'',
         users:[]
 
     },
@@ -92,7 +96,7 @@ export default {
     computed: {
         qrcodePath: function() {
         let bgcolor=this.background ? this.background.substring(1):""; 
-        let color=this.background ? this.foreground.substring(1):""; 
+        let color=this.foreground ? this.foreground.substring(1):""; 
           console.log(bgcolor);
           return `https://api.qrserver.com/v1/create-qr-code/?data=${this.text}&size=${this.size}x${this.size}&format=${this.format}&bgcolor=${bgcolor}&color=${color}`
           //return `https://api.qrserver.com/v1/create-qr-code/?data=Hello&size=200x200&bgcolor=0000ff`
@@ -105,7 +109,29 @@ export default {
         },
         deleteRow(index) {
              this.users.splice(index, 1);
+        },
+        createCode() {
+         
+           if(!this.text) {
+                this.$flashMessage.show({
+                                type: 'error',
+                                title: 'Le texte à encoder doit être renseigné',
+                                message: 'Le texte à encoder doit être renseigné'
+                            });
+                    return;
+            } 
+            
+            const data = {
+                    url:this.qrcodePath,
+                    name:this.name, 
+                    expiration:this.expiration,
+                    sharedWith:this.users
+            }
+            console.log(data);
+            this.$store.commit('changeLoadingStatus', true);
+            this.$store.dispatch('handleNewCode', data);   
         }
+        
     }
 }
 </script>

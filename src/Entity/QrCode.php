@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints\Date;
+
 /**
  * @ORM\Entity(repositoryClass=QrCodeRepository::class)
  */
@@ -65,7 +67,8 @@ class QrCode
 
     public function __construct()
     {
-    
+        $this->created_at = new Date();
+        $this->updated_at = new Date();
         $this->shared_with = new ArrayCollection();
     }
 

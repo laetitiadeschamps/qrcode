@@ -8,11 +8,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 
+/**
+ * @Route("/api/v1/qrcodes", name="api_qr_code-")
+ */
 class QrCodeController extends AbstractController
 {
     /**
-     * @Route("/api/v1/qrcodes", name="api_qr_code")
-     */
+    * @Route("", name="list", methods={"GET"})
+    */
     public function index(QrCodeRepository $qrCodeRepository, Security $security): Response
     {
         /** @var User $user */
@@ -26,5 +29,17 @@ class QrCodeController extends AbstractController
         return $this->json($qrcodes, 200, [], [
             'groups'=>'read:qrcodes'
         ]);
+    }
+     /**
+    * @Route("", name="add", methods={"POST"})
+    */
+    public function add(QrCodeRepository $qrCodeRepository, Security $security): Response
+    {
+        /** @var User $user */
+        $user = $security->getUser();
+       
+       
+     
+        return $this->json('ok');
     }
 }

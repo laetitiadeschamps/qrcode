@@ -101,6 +101,25 @@ export default createStore({
                    commit("addFormError", {field:"email", error:"Les identifiants sont invalides"});
                     
                 })
+        },
+        handleNewCode({commit}, data) {
+        
+            axios.post('api/v1/qrcodes', data)
+                .then(response=> { 
+                    commit('changeLoadingStatus', false);
+                    router.push('/');  
+                    flashMessage.show({
+                        type: 'success',
+                        title: 'Le code a bien été créé',
+                        message: 'Le code a bien été créé'
+                    });
+                })
+                .catch(error=> {
+                    commit('changeLoadingStatus', false);
+                    //TODO:
+                    //commit("addFormError", {field:"email", error:"Les identifiants sont invalides"});
+                    
+                })
         }
 
     },

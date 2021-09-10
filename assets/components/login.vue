@@ -2,7 +2,7 @@
 <main>
 <div class="text-center">
     <h1>Se connecter</h1>
-    <form @submit.prevent="handleLogin">
+    <form @submit.prevent="handleLogin" novalidate="true" class="w-50 mx-auto">
         
        <div class="errors-container">
         
