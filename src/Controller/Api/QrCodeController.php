@@ -56,6 +56,8 @@ class QrCodeController extends AbstractController
         $jsonArray = json_decode($request->getContent(), true);
         $code->setAuthor($user);
        
+        
+
         if(count($jsonArray['users']) > 0) {
             $errorslist = [];
             foreach($jsonArray['users'] as $index => $userShared) {

@@ -8,13 +8,14 @@
        
         <li class="list-group-item d-flex align-items-center">
             <figure>
-                   <img :src="qrcode.url" alt="" class="list-image" title="" />
+                   <img :src="qrcode.url" alt="" class="list-image" :title="qrcode.name" />
                     <!-- <img :src="qrcode.url" alt="qrtag"> -->
             </figure>
             <figcaption class="d-flex justify-content-center align-items-center">
                 
                     <a :href="`/qrcodes/${qrcode.id}`" class="ml-4">{{ qrcode.name }}  </a>
                     <span><i class="fas fa-edit px-2"></i></span>
+                    <span @click="downloadFile($event)"><i class="fas fa-download"></i></span>
                     <a href=""><i class="fas fa-trash px-2"></i></a>
               
                
@@ -63,6 +64,20 @@ export default({
             let displayDay = date.getDate() >9 ? date.getDate() : '0'+date.getDate();
 
             return displayDay+'-'+displayMonth+'-'+date.getFullYear();
+        },
+        async downloadFile(event) {
+            let li = event.target.closest("li");
+            let url = li.querySelector("img").src;
+            const image = await fetch(url)
+            const imageBlog = await image.blob()
+            const imageURL = URL.createObjectURL(imageBlog)
+
+            const link = document.createElement('a')
+            link.href = imageURL
+            link.download = li.querySelector("img").title;
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
         }
     }
     
