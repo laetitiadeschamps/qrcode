@@ -106,6 +106,7 @@ export default createStore({
         
             axios.post('api/v1/qrcodes', data)
                 .then(response=> { 
+                    console.log(response);
                     commit('changeLoadingStatus', false);
                     router.push('/');  
                     flashMessage.show({

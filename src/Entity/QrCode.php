@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\QrCodeRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -67,8 +68,8 @@ class QrCode
 
     public function __construct()
     {
-        $this->created_at = new Date();
-        $this->updated_at = new Date();
+        $this->created_at = new DateTime();
+        $this->updated_at = new DateTime();
         $this->shared_with = new ArrayCollection();
     }
 

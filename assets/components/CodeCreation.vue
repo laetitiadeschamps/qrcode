@@ -123,9 +123,9 @@ export default {
             
             const data = {
                     url:this.qrcodePath,
-                    name:this.name, 
-                    expiration:this.expiration,
-                    sharedWith:this.users
+                    name:this.name,
+                    users:this.users,
+                   expires_at:this.expiration
             }
             console.log(data);
             this.$store.commit('changeLoadingStatus', true);
