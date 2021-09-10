@@ -8,7 +8,7 @@
        
         <li class="list-group-item d-flex align-items-center">
             <figure>
-                   <img src="https://api.qrserver.com/v1/create-qr-code/?data=HelloWorld&amp;size=100x100" alt="" class="list-image" title="" />
+                   <img :src="qrcode.url" alt="" class="list-image" title="" />
                     <!-- <img :src="qrcode.url" alt="qrtag"> -->
             </figure>
             <figcaption class="d-flex justify-content-center align-items-center">
@@ -83,8 +83,8 @@ a {
 }
 
 .list-image {
-    width:40%;
-    height:40%;
+    width:5em;
+    height:5em;
 }
 
 </style>

@@ -118,7 +118,7 @@ export default createStore({
                 .catch(error=> {
                     commit('changeLoadingStatus', false);
                     //TODO:
-                    //commit("addFormError", {field:"email", error:"Les identifiants sont invalides"});
+                    commit('addFormErrors', error.request.responseText);
                     
                 })
         }

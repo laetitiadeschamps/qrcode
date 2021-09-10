@@ -2,6 +2,16 @@
 <main>
     <form class="w-50 mx-auto text-center" @submit.prevent="createCode">
         <h1>Créer un qr-code</h1>
+         <div class="errors-container">
+    
+             <p v-if="Object.entries($store.state.errors)">
+                <ul>
+                    <li class="alert alert-danger" v-for="error in $store.state.errors" :key="error">{{ error.error }} </li>
+                </ul>
+            </p>
+           
+            
+        </div>
         <div class="input-group input-group-md mb-3">
   <span class="input-group-text" id="qrcodeName">Nom à donner au Qrcode (usage interne)<span>*</span></span> 
   <input type="text" v-model="name" class="form-control" aria-label="name input" aria-describedby="qrcodeName">
@@ -93,6 +103,9 @@ export default {
     created() {
         this.addRow();
     },
+    beforeUnmount() {
+         this.$store.commit('resetErrors');
+    },
     computed: {
         qrcodePath: function() {
         let size = this.size ?? '100';
@@ -113,7 +126,7 @@ export default {
              this.users.splice(index, 1);
         },
         createCode() {
-         
+        this.$store.commit('resetErrors');
            if(!this.text) {
                 this.$flashMessage.show({
                                 type: 'error',

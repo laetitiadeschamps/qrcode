@@ -55,21 +55,24 @@ class QrCodeController extends AbstractController
         $serializer->deserialize($JsonData, QrCode::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $code]); 
         $jsonArray = json_decode($request->getContent(), true);
         $code->setAuthor($user);
-        $errors = [];
-        
-        foreach($jsonArray['users'] as $index => $userShared) {
-           
-            $user = $userRepository->findOneBy(['email'=>$userShared['mail']])?? '';
-            if($user) {
-                $code->addSharedWith($user);   
-            } else {
-                $errors[]= "Le mail " . $userShared['mail'] ." n'est pas valide";
+       
+        if(count($jsonArray['users']) > 0) {
+            $errorslist = [];
+            foreach($jsonArray['users'] as $index => $userShared) {
+                if(!$userShared['mail'] == '') {
+                    $user = $userRepository->findOneBy(['email'=>$userShared['mail']])?? '';
+                    if($user) {
+                        $code->addSharedWith($user);   
+                    } else {
+                        $errorslist[]['error']= "Le mail " . $userShared['mail'] ." n'est pas valide";
+                    }  
+                }
+                     
             }
-            
-               
         }
-        if(count($errors) > 0) {
-            return $this->json($errors, 400);
+        
+        if(isset($errorslist) && count($errorslist) > 0) {
+            return $this->json($errorslist, 400);
         }
         $this->em->persist($code);
         $this->em->flush();
