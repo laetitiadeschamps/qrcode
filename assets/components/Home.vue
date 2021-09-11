@@ -23,7 +23,7 @@
                 <span class="badge mb-2 bg-secondary text-wrap">
                     Crée le {{formatDate(qrcode.created_at)}}
                 </span>
-                 <span class="badge mb-2 bg-danger text-wrap">
+                 <span v-if="qrcode.expires_at" class="badge mb-2 bg-danger text-wrap">
                     Expire le {{formatDate(qrcode.expires_at)}}
                 </span>
                
@@ -61,6 +61,7 @@ export default({
     
     methods: {
         formatDate(dateInput) {
+            
             let date = new Date(dateInput);
             let month = date.getMonth()+1;
             let displayMonth = month >9 ? month : '0'+month;
