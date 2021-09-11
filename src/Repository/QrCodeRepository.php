@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\QrCode;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -27,9 +28,12 @@ class QrCodeRepository extends ServiceEntityRepository
     
     public function findShared($user)
     {
+        $today = new DateTime();
         return $this->createQueryBuilder('qrcode')
             ->where(':userId MEMBER OF qrcode.shared_with')
+            ->andWhere('qrcode.expires_at > :today OR qrcode.expires_at is NULL')
             ->setParameter(':userId', $user->getId())
+            ->setParameter(':today', $today->format('Y-m-d'))
             ->getQuery()
             ->getResult()
         ;

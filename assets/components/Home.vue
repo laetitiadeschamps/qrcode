@@ -23,6 +23,7 @@
                 <span class="badge mb-2 bg-secondary text-wrap">
                     Crée le {{formatDate(qrcode.created_at)}}
                 </span>
+                
                  <span v-if="qrcode.expires_at" class="badge mb-2 bg-danger text-wrap">
                     Expire le {{formatDate(qrcode.expires_at)}}
                 </span>
