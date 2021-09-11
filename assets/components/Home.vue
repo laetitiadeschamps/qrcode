@@ -53,12 +53,12 @@
 export default({
     name:'Home',
     created() {
+        this.$store.commit('resetQrCodes');
         this.$store.commit('changeLoadingStatus', true);
         this.$store.dispatch('getQrcodes');
+       
     },
-    beforeUnmount() {
-         this.$store.commit('resetQrCodes');
-    },
+    
     methods: {
         formatDate(dateInput) {
             let date = new Date(dateInput);

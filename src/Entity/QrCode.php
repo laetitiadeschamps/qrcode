@@ -66,6 +66,36 @@ class QrCode
      */
     private $shared_with;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:qrcodes"})
+     */
+    private $format;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"read:qrcodes"})
+     */
+    private $text;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"read:qrcodes"})
+     */
+    private $size;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:qrcodes"})
+     */
+    private $background;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:qrcodes"})
+     */
+    private $foreground;
+
     public function __construct()
     {
         $this->created_at = new DateTime();
@@ -170,6 +200,66 @@ class QrCode
     public function removeSharedWith(User $sharedWith): self
     {
         $this->shared_with->removeElement($sharedWith);
+
+        return $this;
+    }
+
+    public function getFormat(): ?string
+    {
+        return $this->format;
+    }
+
+    public function setFormat(?string $format): self
+    {
+        $this->format = $format;
+
+        return $this;
+    }
+
+    public function getText(): ?string
+    {
+        return $this->text;
+    }
+
+    public function setText(string $text): self
+    {
+        $this->text = $text;
+
+        return $this;
+    }
+
+    public function getSize(): ?int
+    {
+        return $this->size;
+    }
+
+    public function setSize(?int $size): self
+    {
+        $this->size = $size;
+
+        return $this;
+    }
+
+    public function getBackground(): ?string
+    {
+        return $this->background;
+    }
+
+    public function setBackground(?string $background): self
+    {
+        $this->background = $background;
+
+        return $this;
+    }
+
+    public function getForeground(): ?string
+    {
+        return $this->foreground;
+    }
+
+    public function setForeground(?string $foreground): self
+    {
+        $this->foreground = $foreground;
 
         return $this;
     }

@@ -69,7 +69,7 @@ export default createStore({
                 });
             })
         },
-        getQrcode({commit}, id) {
+        getQrCode({commit}, id) {
             axios.get(`api/v1/qrcodes/${id}`)
             
             .then(response=> {

@@ -5,6 +5,7 @@ import Home from '../components/Home.vue'
 import Login from '../components/Login.vue'
 import Register from '../components/Register.vue'
 import CodeCreation from '../components/CodeCreation'
+import CodeUpdate from '../components/CodeUpdate'
 import CodeDeletion from '../components/CodeDeletion'
 import { isLoggedIn } from '../utils/index.js'
 
@@ -14,7 +15,7 @@ import { isLoggedIn } from '../utils/index.js'
 const routes = [
   { path: '/', component: Home },
   { path: '/new', component: CodeCreation },
-  { path: '/update/:id', component: CodeCreation },
+  { path: '/update/:id', component: CodeUpdate },
   { path: '/delete', component: CodeDeletion },
   { path: '/login', component: Login, name:'login', meta: {
     allowAnonymous: true
