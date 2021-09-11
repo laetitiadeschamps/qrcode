@@ -1,17 +1,19 @@
 <template>
 <main>
-    <form class="w-50 mx-auto text-center" @submit.prevent="createCode">
+
+  
+    <form class="w-50 mx-auto text-center bg-light border border-dark rounded p-3" @submit.prevent="createCode">
         <h1>Créer un qr-code</h1>
-      
-         <div class="errors-container">
-    
+        <div class="errors-container">
              <p v-if="Object.entries($store.state.errors)">
                 <ul>
                     <li class="alert alert-danger" v-for="error in $store.state.errors" :key="error">{{ error.error }} </li>
                 </ul>
-            </p>
-           
-            
+            </p>   
+        </div>
+        <div class="w-50 p-3 m-3 rounded border border-dark mx-auto text-center preview">
+            <h5>Aperçu</h5>
+            <img id="myImage" :src="qrcodePath" alt="" title="" />
         </div>
         <div class="input-group input-group-md mb-3">
   <span class="input-group-text" id="qrcodeName">Nom à donner au Qrcode (usage interne)<span>*</span></span> 
@@ -48,15 +50,14 @@
   <input type="date" v-model="expiration" class="form-control" aria-label="expiration date input" aria-describedby="qrcodeExpiration">
 </div>
 <div>
- <p>Partager mon code : </p>
   <div class="form-group row">
-          <div class="col-lg-12">
-            <button type="button" @click="addRow" class="btn btn-outline-secondary">Ajouter un contact</button>
+          <div class="col-lg-12 border-left">
+             <span><i class="fs-5 p-2 far fa-paper-plane"></i> Partager mon code : </span><button type="button" @click="addRow" class="btn btn-outline-success"><i class=" fa fa-plus"></i></button>
           </div>
 </div>
  <div class="form-group row" v-for="(user, index) in users" :key="user.id">
           <div class="col-lg-9">
-            <input type="text" v-model="user.mail" :name="'user[' + index + '][mail]'" class="form-control" placeholder="email du contact">
+            <input type="text" v-model="user.mail" :name="'user[' + index + '][mail]'" class="form-control my-2" placeholder="email du contact">
           </div>
            <div class="col-lg-3">
             <button type="button" @click="deleteRow(index)" class="btn btn-outline-danger rounded-circle">
@@ -73,11 +74,7 @@
   </div>
  
 </form>
-<div class="w-50 mx-auto text-center preview">
-<h5>Aperçu</h5>
-    <img id="myImage" :src="qrcodePath" alt="" title="" />
-   
-</div>
+
 </main>
     
 </template>
@@ -162,3 +159,4 @@ export default {
     }
 }
 </script>
+

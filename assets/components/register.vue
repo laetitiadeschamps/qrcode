@@ -1,9 +1,13 @@
 <template>
 <main>
-   <div class="text-center">
-    <h1>S'inscrire</h1>
-    <form @submit.prevent="handleRegister" novalidate="true" class="w-50 mx-auto">
-       
+  <div class="bg-light d-flex w-50 mx-auto border my-auto content-container">
+        <figure class="w-50 my-auto p-2">
+            <img src="../images/scan.png" alt="" class="w-100">
+        </figure>
+
+    
+    <form @submit.prevent="handleRegister" novalidate="true" class="w-50 p-2 mx-auto m-4 d-flex flex-column justify-content-center">
+       <h1>S'inscrire</h1>
         <div class="errors-container">
              <!-- <p v-if="$store.state.formMessage" class="message" :class="{'alert-danger': $store.state.formMessage.type == error, 'alert-success': $store.state.formMessage.type == success}">{{ $store.state.formMessage.message}}</p>  -->
             
@@ -36,7 +40,7 @@
         <input type="password" v-model="password_confirm" class="form-control" id="password_confirm">
     </div>
     
-    <button type="submit" class="btn btn-primary">S'inscrire</button>
+    <button type="submit" class="btn btn-outline-warning">S'inscrire</button>
     </form>
 </div>
 </main>
@@ -118,10 +122,9 @@ export default {
 }
 
 </script>
-
 <style>
-
-.errors-container {
-    min-height: 5em;
-}
+    body {
+        background-color: #d6d6d6;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
 </style>

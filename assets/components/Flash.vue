@@ -10,4 +10,8 @@
 ul {
     padding:0;
 }
+._vue-flash-msg-body {
+    z-index: 100;
+    bottom:-100px;
+}
 </style>
