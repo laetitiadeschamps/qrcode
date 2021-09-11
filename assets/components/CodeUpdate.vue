@@ -1,6 +1,6 @@
 <template>
 <main>
-    <form class="w-50 mx-auto text-center" @submit.prevent="createCode">
+    <form class="w-50 mx-auto text-center" @submit.prevent="updateCode">
         <h1>Modifier un qr-code</h1>
     
          <div class="errors-container">
@@ -15,11 +15,11 @@
         </div>
         <div class="input-group input-group-md mb-3">
   <span class="input-group-text" id="qrcodeName">Nom à donner au Qrcode (usage interne)<span>*</span></span> 
-  <input type="text" v-model="qrcode[0].name" class="form-control" aria-label="name input" aria-describedby="qrcodeName">
+  <input type="text" v-model="qrcode.name" class="form-control" aria-label="name input" aria-describedby="qrcodeName">
 </div>
   <div class="input-group mb-3">
   <label class="input-group-text" for="inputGroupSelect01">Format</label>
-  <select v-model="qrcode[0].format" class="form-select" id="inputGroupSelect01">
+  <select v-model="qrcode.format" class="form-select" id="inputGroupSelect01">
     <option>Choisir ...</option>
     <option value="svg">SVG</option>
     <option value="png">PNG</option>
@@ -31,21 +31,21 @@
 </div>
   <div class="input-group input-group-md mb-3">
   <span class="input-group-text" id="qrcodeText">Texte à encoder<span>*</span> </span>
-  <input type="text" class="form-control" v-model="qrcode[0].text" aria-label="Text input" aria-describedby="qrcodeText">
+  <input type="text" class="form-control" v-model="qrcode.text" aria-label="Text input" aria-describedby="qrcodeText">
 </div> 
   <div class="mb-3 d-flex align-items-stretch">
-    <span class="input-group-text w-75" id="qrcodeBackground">Couleur de fond</span><input type="color" v-model="qrcode[0].background" class="align-items-stretch w-25" id="qrcodeBackgroundColor" aria-describedby="qrcodeBackground">
+    <span class="input-group-text w-75" id="qrcodeBackground">Couleur de fond</span><input type="color" v-model="qrcode.background" class="align-items-stretch w-25" id="qrcodeBackgroundColor" aria-describedby="qrcodeBackground">
   </div>
 <div class="mb-3 d-flex">
-    <span class="input-group-text w-75" id="qrcodeForeground">Couleur principale</span><input type="color" v-model="qrcode[0].foreground" class="w-25" id="qrcodeForegroundColor" aria-describedby="qrcodeBackground">
+    <span class="input-group-text w-75" id="qrcodeForeground">Couleur principale</span><input type="color" v-model="qrcode.foreground" class="w-25" id="qrcodeForegroundColor" aria-describedby="qrcodeBackground">
   </div>
   <div class="input-group input-group-md mb-3">
   <span class="input-group-text" id="qrcodeSize">Taille en pixels</span>
-  <input type="number" class="form-control" v-model="qrcode[0].size" aria-label="Sizing input" aria-describedby="qrcodeSize">
+  <input type="number" class="form-control" v-model="qrcode.size" aria-label="Sizing input" aria-describedby="qrcodeSize">
 </div>
 <div class="input-group input-group-md mb-3">
   <span class="input-group-text" id="qrcodeExpiration">Programmer une date de suppression du code</span>
-  <input type="date" class="form-control" v-model="qrcode[0].expires_at" aria-label="expiration date input" aria-describedby="qrcodeExpiration">
+  <input type="date" class="form-control" v-model="qrcode.expires_at" aria-label="expiration date input" aria-describedby="qrcodeExpiration">
 </div>
 <div>
  <p>Partager mon code : </p>
@@ -92,7 +92,7 @@ export default {
     },
     created() {
         this.$store.commit('resetErrors');
-        this.addRow();
+        this.addRows();
   
     },
     beforeUnmount() {
@@ -104,53 +104,53 @@ export default {
           return code.id == this.$route.params.id;
         })
        
-          return code
+          return code[0]
         },
-        // qrcodePath: function() {
-        // let size = this.qrcode.size ?? '100';
-        // let format = this.qrcode.format ?? '';
-        // let bgcolor=this.qrcode.background ? this.background.substring(1):""; 
-        // let color=this.qrcode.foreground ? this.foreground.substring(1):""; 
-        //   console.log(bgcolor);
-        //   return `https://api.qrserver.com/v1/create-qr-code/?data=${this.qrcode.text}&size=${size}x${size}&format=${format}&bgcolor=${bgcolor}&color=${color}`
-        //   //return `https://api.qrserver.com/v1/create-qr-code/?data=Hello&size=200x200&bgcolor=0000ff`
-        // }
+        qrcodePath: function() {
+         let size = this.qrcode.size ?? '100';
+         let format = this.qrcode.format ?? '';
+         let bgcolor=this.qrcode.background ? this.qrcode.background.substring(1):""; 
+         let color=this.qrcode.foreground ? this.qrcode.foreground.substring(1):""; 
+     
+           return `https://api.qrserver.com/v1/create-qr-code/?data=${this.qrcode.text}&size=${size}x${size}&format=${format}&bgcolor=${bgcolor}&color=${color}`
+      
+         }
     },
     methods: {
-        addRow() {
-             let usersToPopulate = this.qrcode[0].shared_with;
+        addRows() {
+             let usersToPopulate = this.qrcode.shared_with;
              usersToPopulate.forEach(user=> {
                this.users.push({mail:user.email});
              })
             
         },
+         addRow() {
+             this.users.push({mail:''});
+           
+            
+        },
         deleteRow(index) {
              this.users.splice(index, 1);
         },
-        async createCode() {
-        this.$store.commit('resetErrors');
-           if(!this.qrcode.text) {
-                this.$flashMessage.show({
-                                type: 'error',
-                                title: 'Le texte à encoder doit être renseigné',
-                                message: 'Le texte à encoder doit être renseigné'
-                            });
-                    return;
-            } 
-            const image = await fetch(this.qrcodePath);
-            const imageBlog = await image.blob()
-            const imageURL = URL.createObjectURL(imageBlog)
-            const data = {
-                    url:imageURL,
+        updateCode() {
+          let id = this.$route.params.id;
+        const data = {
+                    id:id,
+                    url:this.qrcodePath,
                     name:this.qrcode.name,
                     users:this.users,
                    expires_at:this.qrcode.expiration,
+                   format:this.qrcode.format,
+                   text:this.qrcode.text,
+                   size:this.qrcode.size,
+                   background:this.qrcode.background,
+                   foreground:this.qrcode.foreground
             }
             console.log(data);
+            
             this.$store.commit('changeLoadingStatus', true);
-            this.$store.dispatch('handleNewCode', data);   
-        }
-        
+            this.$store.dispatch('handleUpdateCode', data);  
     }
+}
 }
 </script>

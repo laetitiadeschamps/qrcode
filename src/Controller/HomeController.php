@@ -17,4 +17,13 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
+    /**
+     * @Route("/{vueRouting}/{vueRouting2}", name="home", defaults={"vueRouting":null,"vueRouting2":null})
+     */
+    public function index_complex(): Response
+    {
+        return $this->render('home/index.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
+    }
 }

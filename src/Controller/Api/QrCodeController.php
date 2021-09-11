@@ -23,11 +23,15 @@ class QrCodeController extends AbstractController
     private $em;
     private $qrCodeRepository;
     private $security;
-    public function __construct(EntityManagerInterface $em, QrCodeRepository $qrCodeRepository, Security $security)
+    private $serializer;
+    private $userRepository;
+    public function __construct(EntityManagerInterface $em, QrCodeRepository $qrCodeRepository, Security $security, SerializerInterface $serializer, UserRepository $userRepository )
     {
         $this->em=$em;
         $this->qrCodeRepository = $qrCodeRepository;
         $this->security = $security;
+        $this->serializer = $serializer;
+        $this->userRepository = $userRepository;
     }
     /**
     * @Route("", name="list", methods={"GET"})
@@ -76,7 +80,6 @@ class QrCodeController extends AbstractController
         $jsonArray = json_decode($request->getContent(), true);
         $code->setAuthor($user);
        
-        
 
         if(count($jsonArray['users']) > 0) {
             $errorslist = [];
@@ -99,7 +102,7 @@ class QrCodeController extends AbstractController
         $this->em->persist($code);
         $this->em->flush();
         
-        return $this->json(["message"=>"Le code a bien été créé"], 200);
+        return $this->json(["message"=>"Le code a bien été créé"], 201);
     }
      /**
     * @Route("/{id}", name="delete", methods={"DELETE"})
@@ -112,5 +115,44 @@ class QrCodeController extends AbstractController
         $this->em->flush();
         
         return $this->json(["message"=>"Le code a bien été supprimé"], 204);
+    }
+     /**
+    * @Route("/{id}", name="update", methods={"PUT", "PATCH"})
+    */
+    public function update(int $id, Request $request): Response
+    {
+          /** @var User $user */
+          $user = $this->security->getUser();
+          $JsonData = $request->getContent();
+        $code = $this->qrCodeRepository->find($id);
+        $this->serializer->deserialize($JsonData, QrCode::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $code,  AbstractNormalizer::IGNORED_ATTRIBUTES => ['id']]); 
+        $jsonArray = json_decode($request->getContent(), true);
+
+        //reset shared with to then populate it again
+        foreach($code->getSharedWith() as $user) {
+               $code->removeSharedWith($user);
+        }
+           
+        if(count($jsonArray['users']) > 0) {
+            $errorslist = [];
+            foreach($jsonArray['users'] as $index => $userShared) {
+                if(!$userShared['mail'] == '') {
+                    $user = $this->userRepository->findOneBy(['email'=>$userShared['mail']])?? '';
+                    if($user) {
+                        $code->addSharedWith($user);   
+                    } else {
+                        $errorslist[]['error']= "Le mail " . $userShared['mail'] ." n'est pas valide";
+                    }  
+                }
+                     
+            }
+        }
+        if(isset($errorslist) && count($errorslist) > 0) {
+            return $this->json($errorslist, 400);
+        }
+
+        $this->em->flush();
+        
+        return $this->json(["message"=>"Le code a bien été mis à jour"], 200);
     }
 }

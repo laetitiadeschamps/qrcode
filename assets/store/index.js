@@ -161,7 +161,28 @@ export default createStore({
                 })
                 .catch(error=> {
                     commit('changeLoadingStatus', false);
-                    commit('addFormErrors', error.request.responseText);
+                    //TODO:
+                    //commit('addFormErrors', error.request.responseText);
+                    
+                })
+        },
+        handleUpdateCode({commit}, data) {
+          
+            axios.put(`api/v1/qrcodes/${data.id}`, data)
+                .then(response=> { 
+                    console.log(response);
+                    commit('changeLoadingStatus', false);
+                    router.push('/');  
+                    flashMessage.show({
+                        type: 'success',
+                        title: 'Le code a bien été mis à jour',
+                        message: 'Le code a bien été mis à jour'
+                    });
+                })
+                .catch(error=> {
+                    commit('changeLoadingStatus', false);
+                    //TODO:
+                    //commit('addFormErrors', error.request.responseText);
                     
                 })
         }
