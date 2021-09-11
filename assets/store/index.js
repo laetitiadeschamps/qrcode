@@ -52,7 +52,11 @@ export default createStore({
    
     actions: {
         getQrcodes({commit}) {
-            axios.get('api/v1/qrcodes')
+            axios.get('api/v1/qrcodes', {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+              })
             
             .then(response=> {
                 console.log(response);
@@ -70,7 +74,11 @@ export default createStore({
             })
         },
         getQrCode({commit}, id) {
-            axios.get(`api/v1/qrcodes/${id}`)
+            axios.get(`api/v1/qrcodes/${id}`,  {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+              })
             
             .then(response=> {
                 console.log(response);
@@ -129,7 +137,11 @@ export default createStore({
         },
         handleNewCode({commit}, data) {
         
-            axios.post('api/v1/qrcodes', data)
+            axios.post('api/v1/qrcodes', data,  {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+              })
                 .then(response=> { 
                     console.log(response);
                     commit('changeLoadingStatus', false);
@@ -157,7 +169,11 @@ export default createStore({
         },
         handleDeleteCode({commit}, id) {
           
-            axios.delete(`api/v1/qrcodes/${id}`)
+            axios.delete(`api/v1/qrcodes/${id}`,  {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+              })
                 .then(response=> { 
                     console.log(response);
                     commit('changeLoadingStatus', false);
@@ -185,7 +201,11 @@ export default createStore({
         },
         handleUpdateCode({commit}, data) {
           
-            axios.put(`api/v1/qrcodes/${data.id}`, data)
+            axios.put(`api/v1/qrcodes/${data.id}`, data,  {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+              })
                 .then(response=> { 
                     console.log(response);
                     commit('changeLoadingStatus', false);
