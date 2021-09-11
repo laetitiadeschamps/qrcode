@@ -142,7 +142,16 @@ export default createStore({
                 })
                 .catch(error=> {
                     commit('changeLoadingStatus', false);
+                     // If the response is, they are our custom errors, so usable as form error 
+                   if(error.response.status) {
                     commit('addFormErrors', error.request.responseText);
+                   } else {
+                    flashMessage.show({
+                        type: 'error',
+                        title: 'Il y a eu une erreur!',
+                        message: 'Il y a eu une erreur!'
+                    });
+                   }
                     
                 })
         },
@@ -161,8 +170,16 @@ export default createStore({
                 })
                 .catch(error=> {
                     commit('changeLoadingStatus', false);
-                    //TODO:
-                    //commit('addFormErrors', error.request.responseText);
+                     // If the response is, they are our custom errors, so usable as form error 
+                    if(error.response.status) {
+                        commit('addFormErrors', error.request.responseText);
+                    } else {
+                        flashMessage.show({
+                            type: 'error',
+                            title: 'Il y a eu une erreur!',
+                            message: 'Il y a eu une erreur!'
+                        });
+                    }
                     
                 })
         },
@@ -181,8 +198,16 @@ export default createStore({
                 })
                 .catch(error=> {
                     commit('changeLoadingStatus', false);
-                    //TODO:
-                    //commit('addFormErrors', error.request.responseText);
+                    // If the response is, they are our custom errors, so usable as form error 
+                   if(error.response.status) {
+                       commit('addFormErrors', error.request.responseText);
+                   } else {
+                    flashMessage.show({
+                        type: 'error',
+                        title: 'Il y a eu une erreur!',
+                        message: 'Il y a eu une erreur!'
+                    });
+                   }
                     
                 })
         }
