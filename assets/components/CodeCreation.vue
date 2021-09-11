@@ -125,7 +125,7 @@ export default {
         deleteRow(index) {
              this.users.splice(index, 1);
         },
-        createCode() {
+        async createCode() {
         this.$store.commit('resetErrors');
            if(!this.text) {
                 this.$flashMessage.show({
@@ -135,12 +135,14 @@ export default {
                             });
                     return;
             } 
-            
+            const image = await fetch(this.qrcodePath);
+            const imageBlog = await image.blob()
+            const imageURL = URL.createObjectURL(imageBlog)
             const data = {
-                    url:this.qrcodePath,
+                    url:imageURL,
                     name:this.name,
                     users:this.users,
-                   expires_at:this.expiration
+                   expires_at:this.expiration,
             }
             console.log(data);
             this.$store.commit('changeLoadingStatus', true);
