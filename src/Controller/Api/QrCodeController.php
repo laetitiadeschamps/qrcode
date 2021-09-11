@@ -16,14 +16,16 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * @Route("/api/v1/qrcodes", name="api_qr_code-")
+ * @Route("/api/v1/qrcodes", name="api_qr_code-", requirements={"id"="\d+"})
  */
 class QrCodeController extends AbstractController
 {
     private $em;
-    public function __construct(EntityManagerInterface $em )
+    private $qrCodeRepository;
+    public function __construct(EntityManagerInterface $em, QrCodeRepository $qrCodeRepository )
     {
         $this->em=$em;
+        $this->qrCodeRepository = $qrCodeRepository;
     }
     /**
     * @Route("", name="list", methods={"GET"})
@@ -79,8 +81,18 @@ class QrCodeController extends AbstractController
         $this->em->persist($code);
         $this->em->flush();
         
-        return $this->json($code, 200, [], [
-            'groups'=>'read:qrcodes'
-        ]);
+        return $this->json(["message"=>"Le code a bien été créé"], 200);
+    }
+     /**
+    * @Route("/{id}", name="delete", methods={"DELETE"})
+    */
+    public function delete(int $id): Response
+    {
+        $code = $this->qrCodeRepository->find($id);
+
+        $this->em->remove($code);
+        $this->em->flush();
+        
+        return $this->json(["message"=>"Le code a bien été supprimé"], 204);
     }
 }
