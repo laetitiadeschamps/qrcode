@@ -9,6 +9,7 @@ export default createStore({
         errors: [],
         user:{},
         qrcodesDisplayed:[],
+        singleQrcode:{},
         loading:false
     },
     mutations: {
@@ -27,6 +28,9 @@ export default createStore({
         },
         qrcodesDisplayed(state, data) {
             state.qrcodesDisplayed = data; 
+        },
+        qrcodeSingle(state, data) {
+            state.singleQrcode = data; 
         },
         saveUserInfos(state, payload) {
             state.user = payload
