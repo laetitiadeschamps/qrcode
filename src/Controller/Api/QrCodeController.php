@@ -40,7 +40,7 @@ class QrCodeController extends AbstractController
     {
         /** @var User $user */
         $user = $security->getUser();
-        $qrcodesOwned = $qrCodeRepository->findBy(['author'=> $user]);
+        $qrcodesOwned = $qrCodeRepository->findOwned($user);
         $qrcodesShared = $qrCodeRepository->findShared($user);
         $qrcodes['owned'] = $qrcodesOwned;
         $qrcodes['shared'] = $qrcodesShared;

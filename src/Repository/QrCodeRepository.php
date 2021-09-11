@@ -21,7 +21,7 @@ class QrCodeRepository extends ServiceEntityRepository
     }
 
      /**
-      * Method to get all qrcodes shared with one user
+      * Method to get all qrcodes shared with one user and not expired
       * @param User
       * @return QrCode[] Returns an array of QrCode objects
       */
@@ -38,7 +38,26 @@ class QrCodeRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+        /**
+      * Method to get all qrcodes owned by one user and not expired
+      * @param User
+      * @return QrCode[] Returns an array of QrCode objects
+      */
     
+      public function findOwned($user)
+      {
+        $today = new DateTime();
+          $today = new DateTime();
+          return $this->createQueryBuilder('qrcode')
+              ->where('qrcode.author = :userId')
+              ->andWhere('qrcode.expires_at > :today OR qrcode.expires_at is NULL')
+              ->setParameter(':userId', $user->getId())
+              ->setParameter(':today', $today->format('Y-m-d'))
+              ->getQuery()
+              ->getResult()
+          ;
+      }
+      
 
     /*
     public function findOneBySomeField($value): ?QrCode
