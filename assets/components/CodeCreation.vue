@@ -103,6 +103,9 @@ export default {
     created() {
         this.$store.commit('resetErrors');
         this.addRow();
+        if(this.$route.params.id) {
+          this.$store.dispatch('getQrCode', this.$route.params.id)
+        }
     },
     beforeUnmount() {
          this.$store.commit('resetErrors');

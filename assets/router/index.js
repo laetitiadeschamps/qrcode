@@ -14,6 +14,7 @@ import { isLoggedIn } from '../utils/index.js'
 const routes = [
   { path: '/', component: Home },
   { path: '/new', component: CodeCreation },
+  { path: '/update/:id', component: CodeCreation },
   { path: '/delete', component: CodeDeletion },
   { path: '/login', component: Login, name:'login', meta: {
     allowAnonymous: true

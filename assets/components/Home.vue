@@ -14,7 +14,7 @@
             <figcaption class="d-flex justify-content-center align-items-center">
                 
                     <a :href="`/qrcodes/${qrcode.id}`" class="ml-4">{{ qrcode.name }}  </a>
-                    <span><i class="fas fa-edit px-2"></i></span>
+                     <router-link :to="`/update/${qrcode.id}`"><i class="fas fa-edit px-2"></i></router-link>
                     <span @click="downloadFile($event)"><i class="fas fa-download"></i></span>
                     <router-link to="/delete" @click="deleteCode($event)"><i class="fas fa-trash px-2"></i></router-link>
               

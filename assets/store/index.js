@@ -65,6 +65,24 @@ export default createStore({
                 });
             })
         },
+        getQrcode({commit}, id) {
+            axios.get(`api/v1/qrcodes/${id}`)
+            
+            .then(response=> {
+                console.log(response);
+                commit('changeLoadingStatus', false);
+                commit('qrcodeSingle', response.data)
+            })
+            .catch(error=> {
+                commit('changeLoadingStatus', false);
+               
+                flashMessage.show({
+                    type: 'error',
+                    title: 'Il y a eu une erreur, veuillez réessayer!',
+                    message: 'Il y a eu une erreur, veuillez réessayer!'
+                });
+            })
+        },
         handleRegister({commit}, data) {
           
             axios.post('api/v1/user', data)
