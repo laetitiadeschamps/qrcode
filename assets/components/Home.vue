@@ -6,7 +6,7 @@
     </header>
     <ul v-for="qrcode in $store.state.qrcodesDisplayed['owned']" :key="qrcode.id" class="my-4 list-group list-group-flush w-100 ">
        
-        <li class="list-group-item d-flex align-items-center">
+        <li class="list-group-item d-flex align-items-center" :id="qrcode.id">
             <figure>
                    <img :src="qrcode.url" alt="" class="list-image" :title="qrcode.name" />
                     <!-- <img :src="qrcode.url" alt="qrtag"> -->
@@ -16,7 +16,7 @@
                     <a :href="`/qrcodes/${qrcode.id}`" class="ml-4">{{ qrcode.name }}  </a>
                     <span><i class="fas fa-edit px-2"></i></span>
                     <span @click="downloadFile($event)"><i class="fas fa-download"></i></span>
-                    <a href=""><i class="fas fa-trash px-2"></i></a>
+                    <router-link to="/delete" @click="deleteCode($event)"><i class="fas fa-trash px-2"></i></router-link>
               
                
                     
@@ -56,6 +56,9 @@ export default({
         this.$store.commit('changeLoadingStatus', true);
         this.$store.dispatch('getQrcodes');
     },
+    beforeUnmount() {
+         this.$store.commit('resetQrCodes');
+    },
     methods: {
         formatDate(dateInput) {
             let date = new Date(dateInput);
@@ -78,6 +81,14 @@ export default({
             document.body.appendChild(link)
             link.click()
             document.body.removeChild(link)
+        },
+        deleteCode(event) {
+           
+                let id = event.target.closest("li").id;
+                this.$store.commit('changeLoadingStatus', true);
+                this.$store.dispatch('handleDeleteCode', id); 
+            
+             
         }
     }
     

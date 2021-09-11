@@ -101,6 +101,7 @@ export default {
         }
     },
     created() {
+        this.$store.commit('resetErrors');
         this.addRow();
     },
     beforeUnmount() {

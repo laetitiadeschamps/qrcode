@@ -22,6 +22,9 @@ export default createStore({
         resetErrors(state) {
             state.errors=[];
         },
+        resetQrCodes(state) {
+            state.qrcodesDisplayed=[];
+        },
         qrcodesDisplayed(state, data) {
             state.qrcodesDisplayed = data; 
         },
@@ -117,7 +120,25 @@ export default createStore({
                 })
                 .catch(error=> {
                     commit('changeLoadingStatus', false);
-                    //TODO:
+                    commit('addFormErrors', error.request.responseText);
+                    
+                })
+        },
+        handleDeleteCode({commit}, id) {
+          
+            axios.delete(`api/v1/qrcodes/${id}`)
+                .then(response=> { 
+                    console.log(response);
+                    commit('changeLoadingStatus', false);
+                    router.push('/');  
+                    flashMessage.show({
+                        type: 'success',
+                        title: 'Le code a bien été supprimé',
+                        message: 'Le code a bien été supprimé'
+                    });
+                })
+                .catch(error=> {
+                    commit('changeLoadingStatus', false);
                     commit('addFormErrors', error.request.responseText);
                     
                 })
