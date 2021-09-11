@@ -22,10 +22,12 @@ class QrCodeController extends AbstractController
 {
     private $em;
     private $qrCodeRepository;
-    public function __construct(EntityManagerInterface $em, QrCodeRepository $qrCodeRepository )
+    private $security;
+    public function __construct(EntityManagerInterface $em, QrCodeRepository $qrCodeRepository, Security $security)
     {
         $this->em=$em;
         $this->qrCodeRepository = $qrCodeRepository;
+        $this->security = $security;
     }
     /**
     * @Route("", name="list", methods={"GET"})
@@ -41,6 +43,22 @@ class QrCodeController extends AbstractController
        
      
         return $this->json($qrcodes, 200, [], [
+            'groups'=>'read:qrcodes'
+        ]);
+    }
+     /**
+    * @Route("/{id}", name="detail", methods={"GET"})
+    */
+    public function detail(int $id): Response
+    {
+        /** @var User $user */
+        $user = $this->security->getUser();
+        $qrcode = $this->qrCodeRepository->find($id);
+        if($qrcode->getAuthor()!= $user) {
+            return $this->json(["message"=>"Vous n'avez pas le droit de modifier ce code"], 403);  
+        }
+       
+        return $this->json($qrcode, 200, [], [
             'groups'=>'read:qrcodes'
         ]);
     }
